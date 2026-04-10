@@ -1,6 +1,36 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
 @import "tailwindcss";
 
+
+@theme {
+  --color-primary: #4353B9; /* Màu xanh của Elon Merch */
+}
+html {
+  /* Giữ chỗ cố định cho thanh cuộn để giao diện không bị giật khi chuyển trang */
+  scrollbar-gutter: stable;
+  overflow-y: scroll;
+}
+
+@layer base {
+  body {
+    background-color: #E8EDFF;
+    background-image: radial-gradient(circle at top left, #ffffff 0%, #E8EDFF 50%, #C4D3FF 100%);
+    background-attachment: fixed;
+    font-family: 'Inter', sans-serif;
+    color: #333333;
+
+    overflow-x: hidden;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+  }
+}
+
+@layer utilities {
+  .hide-scrollbar::-webkit-scrollbar { display: none; }
+  .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+}
+
 @layer base {
   body {
     /* Màu nền gradient xanh dương nhạt / trắng giống Figma */
@@ -21,4 +51,121 @@
     -ms-overflow-style: none;
     scrollbar-width: none;
   }
+}
+
+@layer utilities {
+  .hide-scrollbar::-webkit-scrollbar { display: none; }
+  .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+  /* --- CÚ PHÁP CHỐT HẠ CHO PAGINATION --- */
+  
+  /* 1. Nới rộng khung Swiper và cho phép nội dung thừa ra ngoài */
+  .swiper-container, .swiper {
+    padding-bottom: 50px !important; /* Tạo một khoảng trống 50px ở dưới */
+    overflow: visible !important;   /* Quan trọng: Cho phép chấm tròn "thoát" ra ngoài */
+  }
+
+  /* 2. Đẩy mấy cái chấm tròn xuống vị trí âm để nó nằm lọt thỏm vào khoảng trống 50px vừa tạo */
+  .swiper-pagination-bullets {
+    bottom: -15px !important; /* Cậu có thể tăng lên -20px, -25px... tùy mắt nhìn nhé */
+  }
+
+  /* 3. Đổi màu chấm active cho giống màu Primary của Elon Merch */
+  .swiper-pagination-bullet-active {
+    background-color: var(--color-primary) !important;
+  }
+}
+
+
+/* Custom nút Navigation của Swiper cho giống Figma */
+.swiper-button-next,
+.swiper-button-prev {
+  background-color: rgba(255, 255, 255, 0.2) !important; /* Mờ hẳn đi */
+  width: 40px !important;  /* Nhỏ nhắn thôi */
+  height: 40px !important;
+  border-radius: 50%;
+  backdrop-filter: blur(4px);
+  color: #4353B9 !important; /* Màu Primary của elonmerch */
+  transition: all 0.3s ease;
+}
+
+/* Chỉnh kích thước icon bên trong nút */
+.swiper-button-next:after,
+.swiper-button-prev:after {
+  font-size: 18px !important;
+  font-weight: bold;
+}
+
+.swiper-button-next:hover,
+.swiper-button-prev:hover {
+  background-color: #4353B9;
+  color: white !important;
+}
+
+/* Đẩy nút ra sát mép hơn cho thoáng */
+.swiper-button-prev { left: 0px !important; }
+.swiper-button-next { right: 0px !important; }
+
+
+/* --- PHIÊN BẢN MINIMALIST: NÚT NHỎ, MẢNH, TINH TẾ --- */
+
+.swiper-button-next,
+.swiper-button-prev {
+  background-color: rgba(255, 255, 255, 0.25) !important; /* Cực kỳ trong suốt */
+  width: 42px !important;  /* Thu nhỏ lại còn 42px (trước là 60px) */
+  height: 42px !important;
+  border-radius: 50% !important;
+  backdrop-filter: blur(10px) !important; /* Tăng độ nhòe kính cho sang */
+  border: 0.5px solid rgba(255, 255, 255, 0.3); /* Viền mảnh như sợi tóc */
+  color: #4353B9 !important;
+  transition: all 0.3s ease-in-out !important;
+}
+
+/* Xóa bỏ icon mặc định của thư viện */
+.swiper-button-next:after,
+.swiper-button-prev:after {
+  display: none !important;
+}
+
+/* Chèn icon mũi tên SIÊU MẢNH (Stroke 1.0) */
+.swiper-button-prev {
+  left: 15px !important;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke-width='1.0' stroke='%234353B9'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M15.75 19.5L8.25 12l7.5-7.5' /%3E%3C/svg%3E") !important;
+  background-repeat: no-repeat !important;
+  background-position: center !important;
+  background-size: 20px !important; /* Icon nhỏ lại cho thanh thoát */
+}
+
+.swiper-button-next {
+  right: 15px !important;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke-width='1.0' stroke='%234353B9'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M8.25 4.5l7.5 7.5-7.5 7.5' /%3E%3C/svg%3E") !important;
+  background-repeat: no-repeat !important;
+  background-position: center !important;
+  background-size: 20px !important;
+}
+
+/* Hiệu ứng Hover: Nút đậm lên một chút và icon chuyển trắng nhẹ */
+.swiper-button-next:hover,
+.swiper-button-prev:hover {
+  background-color: #4353B9 !important;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke-width='1.2' stroke='white'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M8.25 4.5l7.5 7.5-7.5 7.5' /%3E%3C/svg%3E") !important;
+  box-shadow: 0 4px 12px rgba(67, 83, 185, 0.3);
+}
+
+.swiper-button-prev:hover {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke-width='1.2' stroke='white'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M15.75 19.5L8.25 12l7.5-7.5' /%3E%3C/svg%3E") !important;
+}
+
+/* Ẩn nút khi không di chuột vào slider (tạo cảm giác gọn gàng) */
+.swiper {
+  --swiper-navigation-size: 0; /* Triệt tiêu kích thước gốc */
+}
+
+.swiper-button-next, .swiper-button-prev {
+  opacity: 0; /* Mặc định ẩn */
+}
+
+.swiper:hover .swiper-button-next, 
+.swiper:hover .swiper-button-prev {
+  opacity: 1; /* Chỉ hiện khi rê chuột vào vùng ảnh */
 }

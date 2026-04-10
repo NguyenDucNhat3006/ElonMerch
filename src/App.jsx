@@ -1,29 +1,87 @@
 import React, { useState } from 'react';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { AnimatePresence, motion } from 'framer-motion';
+
+// Import Components
 import Header from './components/Header';
 import AuthModal from './components/AuthModal';
-import Home from './pages/Home';
 
-function App() {
-  const [authType, setAuthType] = useState(null); // 'login', 'register', hoặc null
-  
+// Import Pages
+import Home from './pages/Home'; // Đã sửa thành chữ H hoa để tránh lỗi file
+import MerchPage from './pages/MerchPage';
+import TicketPage from './pages/TicketPage';
+import CreatorsPage from './pages/CreatorsPage';
+import AboutPage from './pages/AboutPage';
+
+// 1. Tạo component bọc hiệu ứng cho từng trang
+const PageTransition = ({ children }) => (
+  <motion.div
+    initial={{ opacity: 0, y: 15 }}    // Bắt đầu: mờ và hơi thấp
+    animate={{ opacity: 1, y: 0 }}     // Hiện ra: rõ dần và về vị trí chuẩn
+    exit={{ opacity: 0, y: -15 }}      // Biến mất: mờ dần và trượt nhẹ lên
+    transition={{ duration: 0.4, ease: "easeOut" }} // Hiệu ứng mượt mà
+  >
+    {children}
+  </motion.div>
+);
+
+// 2. Component xử lý chuyển động giữa các Routes
+const AnimatedRoutes = () => {
+  const location = useLocation();
+
   return (
-    <div className="min-h-screen pb-20">
-      <Header onOpenAuth={setAuthType} />
-      
-      {/* Khung nội dung chính */}
-      <main className="max-w-6xl mx-auto px-4 pt-6">
-        <Home />
-      </main>
+    /* mode="wait" giúp trang cũ biến mất hoàn toàn rồi mới hiện trang mới */
+    <AnimatePresence mode="wait">
+      <Routes location={location} key={location.pathname}>
+        <Route path="/" element={
+          <PageTransition><Home /></PageTransition>
+        } />
+        
+        <Route path="/merch" element={
+          <PageTransition><MerchPage /></PageTransition>
+        } />
+        
+        <Route path="/tickets" element={
+          <PageTransition><TicketPage /></PageTransition>
+        } />
+        
+        <Route path="/creators" element={
+          <PageTransition><CreatorsPage /></PageTransition>
+        } />
+        
+        <Route path="/about" element={
+          <PageTransition><AboutPage /></PageTransition>
+        } />
+      </Routes>
+    </AnimatePresence>
+  );
+};
 
-      {/* Modal Đăng nhập / Đăng ký */}
-      {authType && (
-        <AuthModal 
-          type={authType} 
-          onClose={() => setAuthType(null)} 
-          switchType={setAuthType}
-        />
-      )}
-    </div>
+// 3. Component App chính
+function App() {
+  const [authType, setAuthType] = useState(null);
+
+  return (
+    <Router>
+      <div className="min-h-screen flex flex-col overflow-x-hidden">
+        {/* Header luôn hiển thị ở mọi trang */}
+        <Header onOpenAuth={setAuthType} />
+
+        {/* Phần nội dung chính với giới hạn chiều rộng 1440px và căn giữa */}
+        <main className="w-full max-w-[1440px] mx-auto px-10 md:px-16 pt-12 flex-1">
+          <AnimatedRoutes />
+        </main>
+
+        {/* Modal Đăng nhập/Đăng ký khi được kích hoạt */}
+        {authType && (
+          <AuthModal
+            type={authType}
+            onClose={() => setAuthType(null)}
+            switchType={setAuthType}
+          />
+        )}
+      </div>
+    </Router>
   );
 }
 
