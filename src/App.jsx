@@ -7,7 +7,7 @@ import Header from './components/Header';
 import AuthModal from './components/AuthModal';
 
 // Import Pages
-import Home from './pages/Home'; // Đã sửa thành chữ H hoa để tránh lỗi file
+import Home from './pages/home'; // Đã sửa thành chữ H hoa để tránh lỗi file
 import MerchPage from './pages/MerchPage';
 import TicketPage from './pages/TicketPage';
 import CreatorsPage from './pages/CreatorsPage';
