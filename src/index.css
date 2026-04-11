@@ -11,6 +11,24 @@ html {
   overflow-y: scroll;
 }
 
+/* Tùy chọn: Làm cho thanh cuộn trông thanh mảnh và chuyên nghiệp hơn */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1; /* Màu slate-300 khớp với thiết kế của Nhật */
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
 @layer base {
   body {
     background-color: #E8EDFF;

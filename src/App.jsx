@@ -2,16 +2,25 @@ import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 
+// Import Context
+import { AuthProvider } from './context/AuthContext'; // ⬅️ ĐÃ THÊM AUTHPROVIDER
+import { CartProvider } from './context/CartContext';
+
 // Import Components
 import Header from './components/Header';
 import AuthModal from './components/AuthModal';
 
 // Import Pages
-import Home from './pages/home'; // Đã sửa thành chữ H hoa để tránh lỗi file
+import Home from './pages/home';
 import MerchPage from './pages/MerchPage';
+import MerchDetailPage from './pages/MerchDetailPage';
 import TicketPage from './pages/TicketPage';
+import TicketBookingPage from './pages/TicketBookingPage';
 import CreatorsPage from './pages/CreatorsPage';
 import AboutPage from './pages/AboutPage';
+import CartPage from './pages/CartPage';
+import SettingsPage from './pages/SettingsPage';
+import OrderDetailsPage from './pages/OrderDetailsPage';
 
 // 1. Tạo component bọc hiệu ứng cho từng trang
 const PageTransition = ({ children }) => (
@@ -33,25 +42,16 @@ const AnimatedRoutes = () => {
     /* mode="wait" giúp trang cũ biến mất hoàn toàn rồi mới hiện trang mới */
     <AnimatePresence mode="wait">
       <Routes location={location} key={location.pathname}>
-        <Route path="/" element={
-          <PageTransition><Home /></PageTransition>
-        } />
-        
-        <Route path="/merch" element={
-          <PageTransition><MerchPage /></PageTransition>
-        } />
-        
-        <Route path="/tickets" element={
-          <PageTransition><TicketPage /></PageTransition>
-        } />
-        
-        <Route path="/creators" element={
-          <PageTransition><CreatorsPage /></PageTransition>
-        } />
-        
-        <Route path="/about" element={
-          <PageTransition><AboutPage /></PageTransition>
-        } />
+        <Route path="/" element={<PageTransition><Home /></PageTransition>} />
+        <Route path="/cart" element={<PageTransition><CartPage /></PageTransition>} />
+        <Route path="/book-ticket/:id" element={<PageTransition><TicketBookingPage /></PageTransition>} />
+        <Route path="/merch-detail/:id" element={<PageTransition><MerchDetailPage /></PageTransition>} />
+        <Route path="/merch" element={<PageTransition><MerchPage /></PageTransition>} />
+        <Route path="/tickets" element={<PageTransition><TicketPage /></PageTransition>} />
+        <Route path="/creators" element={<PageTransition><CreatorsPage /></PageTransition>} />
+        <Route path="/about" element={<PageTransition><AboutPage /></PageTransition>} />
+        <Route path="/settings" element={<PageTransition><SettingsPage /></PageTransition>} />
+        <Route path="/order-details/:id" element={<PageTransition><OrderDetailsPage /></PageTransition>} />
       </Routes>
     </AnimatePresence>
   );
@@ -62,26 +62,28 @@ function App() {
   const [authType, setAuthType] = useState(null);
 
   return (
-    <Router>
-      <div className="min-h-screen flex flex-col overflow-x-hidden">
-        {/* Header luôn hiển thị ở mọi trang */}
-        <Header onOpenAuth={setAuthType} />
+    <AuthProvider>
+      <CartProvider>
+        <Router>
+          {/* ⬇️ THAY ĐỔI: Thêm "overflow-y-scroll" vào class dưới đây */}
+          <div className="min-h-screen flex flex-col overflow-x-hidden overflow-y-scroll">
+            <Header onOpenAuth={setAuthType} />
 
-        {/* Phần nội dung chính với giới hạn chiều rộng 1440px và căn giữa */}
-        <main className="w-full max-w-[1440px] mx-auto px-10 md:px-16 pt-12 flex-1">
-          <AnimatedRoutes />
-        </main>
+            <main className="w-full max-w-[1440px] mx-auto px-10 md:px-16 pt-12 flex-1">
+              <AnimatedRoutes />
+            </main>
 
-        {/* Modal Đăng nhập/Đăng ký khi được kích hoạt */}
-        {authType && (
-          <AuthModal
-            type={authType}
-            onClose={() => setAuthType(null)}
-            switchType={setAuthType}
-          />
-        )}
-      </div>
-    </Router>
+            {authType && (
+              <AuthModal
+                type={authType}
+                onClose={() => setAuthType(null)}
+                switchType={setAuthType}
+              />
+            )}
+          </div>
+        </Router>
+      </CartProvider>
+    </AuthProvider>
   );
 }
 
