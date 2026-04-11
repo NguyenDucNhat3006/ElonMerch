@@ -1,6 +1,15 @@
 import React from 'react';
-// Import thư viện Swiper và các module cần thiết
+import { useNavigate } from 'react-router-dom';
+import { ShoppingBag, Star } from 'lucide-react';
+
+// --- IMPORT SWIPER ---
 import { Swiper, SwiperSlide } from 'swiper/react';
+import { Autoplay, Pagination, Navigation } from 'swiper/modules';
+import 'swiper/css';
+import 'swiper/css/pagination';
+import 'swiper/css/navigation';
+
+// --- IMPORT ASSETS (GIỮ NGUYÊN TOÀN BỘ ẢNH CỦA NHẬT) ---
 import bannerThuocDang from '../assets/banner/thuocdangdatat.png';
 import concert from '../assets/banner/concert.png';
 import hoathinh from '../assets/banner/hoathinh.png';
@@ -11,20 +20,16 @@ import event2 from '../assets/event/eve2.png';
 import event3 from '../assets/event/eve3.png';
 import event4 from '../assets/event/eve4.png';
 import event5 from '../assets/event/eve5.png';
-// 1. Thêm Navigation vào phần import module
-import { Autoplay, Pagination, Navigation } from 'swiper/modules';
-
-// 2. Thêm CSS cho Navigation
-import 'swiper/css';
-import 'swiper/css/pagination';
-import 'swiper/css/navigation'; // Thêm dòng này
-
-
-// Import CSS mặc định của Swiper
-import 'swiper/css';
-import 'swiper/css/pagination';
+import merchEv1 from '../assets/event/pven1.png';
+import merchEv2 from '../assets/event/pven2.png';
+import merchEv3 from '../assets/event/pven3.png';
+import ban1 from '../assets/banner/ban1.png';
+import ban2 from '../assets/banner/ban2.png';
 
 const Home = () => {
+  const navigate = useNavigate();
+
+  // --- DỮ LIỆU TỪ TRANG HOME CŨ ---
   const topEvents = [
     { id: 1, title: '', img: leChiVien },
     { id: 2, title: '', img: bannerThuocDang },
@@ -38,47 +43,80 @@ const Home = () => {
     { id: 3, title: '', img: event3, label: 'MERCHANDISE' },
     { id: 4, title: '', img: event4, label: null },
     { id: 5, title: '', img: event5, label: null },
-    // { id: 6, title: 'Rap Việt All-Star', img: 'https://picsum.photos/seed/6/400/600', label: 'HOT' },
+  ];
+
+  // --- DỮ LIỆU TỪ TRANG MERCH CŨ ---
+  const merchCollections = [
+    { id: 1, title: '', img: ban1 },
+    { id: 2, title: '', img: ban2 },
+  ];
+
+  const merchEvents = [
+    { id: 1, title: '', img: merchEv1 },
+    { id: 2, title: '', img: merchEv2 },
+    { id: 3, title: '', img: merchEv3, label: 'MERCHANDISE' },
+  ];
+
+  const merchProducts = [
+    { id: 1, name: "Áo Thun Soobin 'All-Rounder' Official", price: 350000, img: 'https://picsum.photos/seed/merch1/400/400', rating: 4.9 },
+    { id: 2, name: "Lightstick Concert Phiên Bản Giới Hạn", price: 850000, img: 'https://picsum.photos/seed/merch2/400/400', rating: 5.0 },
+    { id: 3, name: "Nến Thơm Elon - Mùi Hương Bến Thành", price: 200000, img: 'https://picsum.photos/seed/merch3/400/400', rating: 4.8 },
+    { id: 4, name: "Tote Bag Vải Canvas Dày Dặn", price: 150000, img: 'https://picsum.photos/seed/merch4/400/400', rating: 4.7 },
   ];
 
   return (
-    <div className="space-y-14 pb-20">
+    <div className="space-y-20 pb-20 relative overflow-hidden">
+      
+      {/* HIỆU ỨNG BLUR TRANG TRÍ (THEO BẢN THIẾT KẾ) */}
+      <div className="fixed top-1/3 -right-20 w-[500px] h-[500px] bg-blue-500/10 blur-[120px] rounded-full -z-10 animate-pulse"></div>
 
-      {/* Section: TOP 1 KỊCH SÂN KHẤU */}
-      <section className="w-full overflow-visible">
+      {/* SECTION 1: TOP 1 KỊCH SÂN KHẤU (SỰ KIỆN HOT) */}
+      <section className="w-full overflow-visible pt-10">
         <h2 className="text-3xl md:text-4xl font-black mb-8 text-slate-900 uppercase tracking-wider">
           Top 1 Kịch Sân Khấu
         </h2>
-
         <Swiper
-          modules={[Autoplay, Pagination, Navigation]} // Thêm Navigation vào đây
+          modules={[Autoplay, Pagination, Navigation]}
           spaceBetween={30}
           slidesPerView={1}
-          breakpoints={{
-            768: { slidesPerView: 2 }, // Hiện đúng 2 ảnh trên Tablet/PC
-          }}
+          breakpoints={{ 768: { slidesPerView: 2 } }}
           loop={true}
-          autoplay={{
-            delay: 3000,
-            disableOnInteraction: false,
-          }}
+          autoplay={{ delay: 3000, disableOnInteraction: false }}
           pagination={{ clickable: true }}
-          navigation={true} // Kích hoạt nút bấm qua lại
-          className="pb-16 relative group" // Thêm group để hiện nút khi hover
+          navigation={true}
+          className="pb-16 relative group"
         >
           {topEvents.map((item) => (
             <SwiperSlide key={item.id}>
-              <div className="rounded-3xl overflow-hidden shadow-2xl relative group cursor-pointer h-full">
-                <img
-                  src={item.img}
-                  alt={item.title}
-                  className="w-full h-full object-contain transition-transform duration-700 group-hover:scale-105"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent"></div>
-                <div className="absolute bottom-0 left-0 p-6 md:p-8 w-full">
-                  <h3 className="text-white font-bold text-xl md:text-3xl drop-shadow-lg uppercase">
-                    {item.title}
-                  </h3>
+              <div className="rounded-3xl overflow-hidden shadow-2xl relative group cursor-pointer h-full border border-slate-100">
+                <img src={item.img} alt={item.title} className="w-full h-full object-contain transition-transform duration-700 group-hover:scale-105" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+              </div>
+            </SwiperSlide>
+          ))}
+        </Swiper>
+      </section>
+
+      {/* SECTION 2: SỰ KIỆN ĐẶC BIỆT */}
+      <section>
+        <div className="flex items-center gap-3 mb-10">
+          <div className="w-10 h-10"><img src={logoTicket} alt="Logo" className="w-full h-full object-contain" /></div>
+          <h2 className="text-2xl md:text-3xl font-black text-slate-900 uppercase tracking-wide">Sự kiện đặc biệt</h2>
+        </div>
+        <Swiper
+          spaceBetween={20}
+          slidesPerView={2.2}
+          breakpoints={{ 640: { slidesPerView: 3.2 }, 1024: { slidesPerView: 5 } }}
+          className="pb-6"
+        >
+          {specialEvents.map((item) => (
+            <SwiperSlide key={item.id}>
+              <div className="bg-white rounded-2xl shadow-md overflow-hidden cursor-pointer hover:shadow-xl hover:-translate-y-2 transition-all duration-300 group h-full border border-slate-50">
+                <div className="aspect-[3/4] relative overflow-hidden bg-gray-50 flex-shrink-0">
+                  <img src={item.img} alt={item.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
+                  {item.label && (
+                    <div className="absolute top-3 right-3 bg-red-500 text-white text-[10px] font-black px-2 py-1 rounded-full shadow-md z-10 uppercase">{item.label}</div>
+                  )}
                 </div>
               </div>
             </SwiperSlide>
@@ -86,51 +124,86 @@ const Home = () => {
         </Swiper>
       </section>
 
-      {/* Section: SỰ KIỆN ĐẶC BIỆT */}
-      <section>
-        <div className="flex items-center gap-3 mb-12">
-          <div className="w-10 h-10 flex items-center justify-center">
-            <img
-              src={logoTicket}
-              alt="Logo"
-              className="w-full h-full object-contain"
-            />
-          </div>
-          <h2 className="text-2xl md:text-3xl font-black text-slate-900 uppercase tracking-wide">
-            Sự kiện đặc biệt
-          </h2>
-        </div>
-
-        {/* Slider cho sự kiện nhỏ (Không autoplay, vuốt tự do) */}
+      {/* SECTION 3: MERCHANDISE COLLECTIONS */}
+      <section className="w-full overflow-visible">
+        <h2 className="text-3xl md:text-4xl font-black mb-10 text-slate-900 uppercase tracking-wider">
+          Merchandise Collections
+        </h2>
         <Swiper
-          spaceBetween={20}
-          slidesPerView={2.2} // Trên điện thoại thấy 2 ảnh và 1 phần ảnh 3
-          breakpoints={{
-            640: { slidesPerView: 3.2 },
-            1024: { slidesPerView: 5 }, // PC hiện 5 ảnh
-          }}
-          className="pb-6 pt-2 px-2 -mx-2"
+          modules={[Autoplay, Pagination, Navigation]}
+          spaceBetween={30}
+          slidesPerView={1}
+          breakpoints={{ 768: { slidesPerView: 2 } }}
+          loop={true}
+          autoplay={{ delay: 3500, disableOnInteraction: false }}
+          pagination={{ clickable: true }}
+          navigation={true}
+          className="pb-16 relative group"
         >
-          {specialEvents.map((item) => (
+          {merchCollections.map((item) => (
             <SwiperSlide key={item.id}>
-              <div className="bg-white rounded-2xl shadow-md overflow-hidden cursor-pointer hover:shadow-xl hover:-translate-y-2 transition-all duration-300 group h-full flex flex-col">
-                <div className="aspect-[3/4] relative overflow-hidden bg-gray-100 flex-shrink-0">
-                  <img
-                    src={item.img}
-                    alt={item.title}
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                  />
-                  {item.label && (
-                    <div className="absolute top-3 right-3 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full shadow-md z-10">
-                      {item.label}
-                    </div>
-                  )}
+              <div className="px-2 md:px-0 h-full">
+                <div className="rounded-3xl overflow-hidden shadow-2xl relative group cursor-pointer w-full aspect-[1.8/1]">
+                  <img src={item.img} alt={item.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"></div>
                 </div>
-                
               </div>
             </SwiperSlide>
           ))}
         </Swiper>
+      </section>
+
+      {/* SECTION 4: SỰ KIỆN CÙNG MERCH */}
+      <section>
+        <div className="flex items-center gap-4 mb-10">
+          <div className="w-10 h-10"><img src={logoTicket} alt="Logo" className="w-full h-full object-contain" /></div>
+          <h2 className="text-2xl md:text-3xl font-black text-slate-900 uppercase tracking-wide">Sự kiện cùng merch</h2>
+        </div>
+        <Swiper
+          modules={[Navigation]}
+          spaceBetween={24}
+          slidesPerView={1.5}
+          navigation={true}
+          breakpoints={{ 640: { slidesPerView: 2.2 }, 1024: { slidesPerView: 3 } }}
+          className="pb-10 group"
+        >
+          {merchEvents.map((item) => (
+            <SwiperSlide key={item.id}>
+              <div className="bg-white rounded-3xl shadow-sm overflow-hidden cursor-pointer hover:shadow-xl hover:-translate-y-2 transition-all duration-300 group h-full flex flex-col border border-blue-50/50">
+                <div className="aspect-[16/9] relative overflow-hidden flex-shrink-0">
+                  <img src={item.img} alt={item.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
+                  {item.label && (
+                    <div className="absolute top-4 right-4 bg-primary text-white text-[10px] font-bold px-3 py-1 rounded-full shadow-lg z-10 uppercase tracking-widest">{item.label}</div>
+                  )}
+                </div>
+              </div>
+            </SwiperSlide>
+          ))}
+        </Swiper>
+      </section>
+
+      {/* SECTION 5: SẢN PHẨM BÁN LẺ (OPTION) */}
+      <section className="pt-10 border-t border-dashed border-slate-200">
+        <h2 className="text-2xl md:text-3xl font-black mb-10 text-slate-900 uppercase tracking-wide">Sản phẩm nổi bật</h2>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+          {merchProducts.map((product) => (
+            <div key={product.id} onClick={() => navigate(`/merch-detail/${product.id}`)} className="bg-white rounded-3xl p-4 shadow-sm border border-slate-100 hover:shadow-xl hover:-translate-y-2 transition-all duration-300 cursor-pointer group">
+              <div className="aspect-square rounded-2xl overflow-hidden mb-4 relative bg-slate-50">
+                <img src={product.img} alt={product.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+              </div>
+              <div className="space-y-2">
+                <h3 className="font-bold text-slate-900 line-clamp-2 group-hover:text-primary transition-colors text-sm">{product.name}</h3>
+                <div className="flex items-center justify-between">
+                  <span className="font-black text-lg text-primary">{product.price.toLocaleString()}đ</span>
+                  <div className="flex items-center text-xs font-bold text-slate-500 gap-1"><Star size={12} className="text-yellow-500" fill="currentColor" /> {product.rating}</div>
+                </div>
+                <button className="w-full mt-2 py-3 rounded-xl font-bold bg-slate-50 text-slate-600 group-hover:bg-primary group-hover:text-white transition-colors flex items-center justify-center gap-2 text-xs">
+                  <ShoppingBag size={14} /> Xem chi tiết
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
       </section>
 
     </div>
