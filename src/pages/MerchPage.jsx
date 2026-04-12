@@ -18,6 +18,11 @@ import event3 from '../assets/event/pven3.png';
 import ban1 from '../assets/banner/ban1.png';
 import ban2 from '../assets/banner/ban2.png';
 import logoTicket from '../assets/banner/logoticket.png';
+import aosoobin from '../assets/products/aosoobin.jpg';
+import khanbandana from '../assets/products/khanbandana.jpg';
+import lightstick from '../assets/products/lightstick.jpg';
+import non from '../assets/products/non.jpg';
+import totebag from '../assets/products/totebag.jpg';
 
 
 
@@ -39,10 +44,11 @@ const MerchPage = () => {
 
     // ⬇️ THÊM MỚI: Dữ liệu danh sách sản phẩm Merch bán lẻ ⬇️
     const merchProducts = [
-        { id: 1, name: "Áo Thun Soobin 'All-Rounder' Official", price: 350000, img: 'https://picsum.photos/seed/merch1/400/400', rating: 4.9 },
-        { id: 2, name: "Lightstick Concert Phiên Bản Giới Hạn", price: 850000, img: 'https://picsum.photos/seed/merch2/400/400', rating: 5.0 },
-        { id: 3, name: "Nến Thơm Elon - Mùi Hương Bến Thành", price: 200000, img: 'https://picsum.photos/seed/merch3/400/400', rating: 4.8 },
-        { id: 4, name: "Tote Bag Vải Canvas Dày Dặn", price: 150000, img: 'https://picsum.photos/seed/merch4/400/400', rating: 4.7 },
+        { id: 1, name: "Áo Thun Soobin 'All-Rounder' Official", price: 350000, img: aosoobin, rating: 4.9 },
+        { id: 2, name: "Lightstick Concert Phiên Bản Giới Hạn", price: 850000, img: lightstick, rating: 5.0 },
+        { id: 3, name: "Khăn Bandana - phụ kiện “đa-zi-năng”", price: 200000, img: khanbandana, rating: 4.8 },
+        { id: 4, name: "Tote Bag Vải Canvas Dày Dặn", price: 150000, img: totebag, rating: 4.7 },
+        { id: 5, name: "Mũ Cap - phụ kiện thời trang", price: 150000, img: non, rating: 4.7 },
     ];
 
     return (

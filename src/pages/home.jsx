@@ -9,7 +9,7 @@ import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 
-// --- IMPORT ASSETS (GIỮ NGUYÊN TOÀN BỘ ẢNH CỦA NHẬT) ---
+// --- IMPORT ASSETS ---
 import bannerThuocDang from '../assets/banner/thuocdangdatat.png';
 import concert from '../assets/banner/concert.png';
 import hoathinh from '../assets/banner/hoathinh.png';
@@ -25,52 +25,57 @@ import merchEv2 from '../assets/event/pven2.png';
 import merchEv3 from '../assets/event/pven3.png';
 import ban1 from '../assets/banner/ban1.png';
 import ban2 from '../assets/banner/ban2.png';
+import aosoobin from '../assets/products/aosoobin.jpg';
+import khanbandana from '../assets/products/khanbandana.jpg';
+import lightstick from '../assets/products/lightstick.jpg';
+import non from '../assets/products/non.jpg';
+import totebag from '../assets/products/totebag.jpg';
 
 const Home = () => {
   const navigate = useNavigate();
 
-  // --- DỮ LIỆU TỪ TRANG HOME CŨ ---
+  // ĐỒNG BỘ ID KHỚP VỚI CƠ SỞ DỮ LIỆU
   const topEvents = [
-    { id: 1, title: '', img: leChiVien },
-    { id: 2, title: '', img: bannerThuocDang },
-    { id: 3, title: '', img: concert },
-    { id: 4, title: '', img: hoathinh },
+    { id: 1, title: 'Lệ Chi Viên', img: leChiVien },
+    { id: 4, title: 'Thuốc Đắng Dã Tật', img: bannerThuocDang }, 
+    { id: 2, title: 'Concert', img: concert }, 
+    { id: 5, title: 'Hoạt hình', img: hoathinh }, 
   ];
 
+  // ✅ ĐÃ CẬP NHẬT TÊN VÀ NHÃN TỪ ẢNH THIẾT KẾ CỦA NHẬT
   const specialEvents = [
-    { id: 1, title: '', img: event1, label: null },
-    { id: 2, title: '', img: event2, label: 'Giảm 50%' },
-    { id: 3, title: '', img: event3, label: 'MERCHANDISE' },
-    { id: 4, title: '', img: event4, label: null },
-    { id: 5, title: '', img: event5, label: null },
+    { id: 6, title: 'Sân Khấu Quốc Thảo: Dưới Màn Son', img: event1, label: 'Giảm 50%' },
+    { id: 7, title: 'Hoàng Dũng - Xoay Tròn', img: event2, label: 'MERCHANDISE' },
+    { id: 8, title: 'Super Sunday Studio', img: event3, label: 'TRỰC TIẾP' },
+    { id: 1, title: 'Lệ Chi Viên', img: leChiVien, label: 'HOT' }, // Link về Lệ Chi Viên
+    { id: 2, title: 'Soobin All-Rounder', img: concert, label: null }, // Link về Soobin
   ];
 
-  // --- DỮ LIỆU TỪ TRANG MERCH CŨ ---
   const merchCollections = [
-    { id: 1, title: '', img: ban1 },
-    { id: 2, title: '', img: ban2 },
+    { id: 1, title: 'Mr Siro Collection', img: ban1 },
+    { id: 2, title: 'Soobin Collection', img: ban2 },
   ];
 
   const merchEvents = [
-    { id: 1, title: '', img: merchEv1 },
-    { id: 2, title: '', img: merchEv2 },
-    { id: 3, title: '', img: merchEv3, label: 'MERCHANDISE' },
+    { id: 3, title: 'Workshop Nến Thơm', img: merchEv1 }, 
+    { id: 2, title: 'Soobin Live Concert', img: merchEv2 }, 
+    { id: 1, title: 'Lệ Chi Viên Merch', img: merchEv3, label: 'MERCHANDISE' }, 
   ];
 
   const merchProducts = [
-    { id: 1, name: "Áo Thun Soobin 'All-Rounder' Official", price: 350000, img: 'https://picsum.photos/seed/merch1/400/400', rating: 4.9 },
-    { id: 2, name: "Lightstick Concert Phiên Bản Giới Hạn", price: 850000, img: 'https://picsum.photos/seed/merch2/400/400', rating: 5.0 },
-    { id: 3, name: "Nến Thơm Elon - Mùi Hương Bến Thành", price: 200000, img: 'https://picsum.photos/seed/merch3/400/400', rating: 4.8 },
-    { id: 4, name: "Tote Bag Vải Canvas Dày Dặn", price: 150000, img: 'https://picsum.photos/seed/merch4/400/400', rating: 4.7 },
+    { id: 1, name: "Áo Thun Soobin 'All-Rounder' Official", price: 350000, img: aosoobin, rating: 4.9 },
+    { id: 2, name: "Lightstick Concert Phiên Bản Giới Hạn", price: 850000, img: lightstick, rating: 5.0 },
+    { id: 3, name: "Khăn Bandana - phụ kiện “đa-zi-năng”", price: 200000, img: khanbandana, rating: 4.8 },
+    { id: 4, name: "Tote Bag Vải Canvas Dày Dặn", price: 150000, img: totebag, rating: 4.7 },
+    { id: 5, name: "Mũ Cap - phụ kiện thời trang", price: 150000, img: non, rating: 4.7 },
   ];
 
   return (
     <div className="space-y-20 pb-20 relative overflow-hidden">
       
-      {/* HIỆU ỨNG BLUR TRANG TRÍ (THEO BẢN THIẾT KẾ) */}
       <div className="fixed top-1/3 -right-20 w-[500px] h-[500px] bg-blue-500/10 blur-[120px] rounded-full -z-10 animate-pulse"></div>
 
-      {/* SECTION 1: TOP 1 KỊCH SÂN KHẤU (SỰ KIỆN HOT) */}
+      {/* SECTION 1: TOP 1 KỊCH SÂN KHẤU */}
       <section className="w-full overflow-visible pt-10">
         <h2 className="text-3xl md:text-4xl font-black mb-8 text-slate-900 uppercase tracking-wider">
           Top 1 Kịch Sân Khấu
@@ -88,7 +93,10 @@ const Home = () => {
         >
           {topEvents.map((item) => (
             <SwiperSlide key={item.id}>
-              <div className="rounded-3xl overflow-hidden shadow-2xl relative group cursor-pointer h-full border border-slate-100">
+              <div 
+                onClick={() => navigate(`/event-detail/${item.id}`)}
+                className="rounded-3xl overflow-hidden shadow-2xl relative group cursor-pointer h-full border border-slate-100"
+              >
                 <img src={item.img} alt={item.title} className="w-full h-full object-contain transition-transform duration-700 group-hover:scale-105" />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
               </div>
@@ -111,11 +119,14 @@ const Home = () => {
         >
           {specialEvents.map((item) => (
             <SwiperSlide key={item.id}>
-              <div className="bg-white rounded-2xl shadow-md overflow-hidden cursor-pointer hover:shadow-xl hover:-translate-y-2 transition-all duration-300 group h-full border border-slate-50">
+              <div 
+                onClick={() => navigate(`/event-detail/${item.id}`)}
+                className="bg-white rounded-2xl shadow-md overflow-hidden cursor-pointer hover:shadow-xl hover:-translate-y-2 transition-all duration-300 group h-full border border-slate-50"
+              >
                 <div className="aspect-[3/4] relative overflow-hidden bg-gray-50 flex-shrink-0">
                   <img src={item.img} alt={item.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
                   {item.label && (
-                    <div className="absolute top-3 right-3 bg-red-500 text-white text-[10px] font-black px-2 py-1 rounded-full shadow-md z-10 uppercase">{item.label}</div>
+                    <div className="absolute top-3 right-3 bg-red-500 text-white text-[10px] font-black px-2 py-1 rounded-full shadow-md z-10 uppercase tracking-wider">{item.label}</div>
                   )}
                 </div>
               </div>
@@ -143,7 +154,10 @@ const Home = () => {
           {merchCollections.map((item) => (
             <SwiperSlide key={item.id}>
               <div className="px-2 md:px-0 h-full">
-                <div className="rounded-3xl overflow-hidden shadow-2xl relative group cursor-pointer w-full aspect-[1.8/1]">
+                <div 
+                  onClick={() => navigate(`/merch-detail/1`)} 
+                  className="rounded-3xl overflow-hidden shadow-2xl relative group cursor-pointer w-full aspect-[1.8/1]"
+                >
                   <img src={item.img} alt={item.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"></div>
                 </div>
@@ -169,7 +183,10 @@ const Home = () => {
         >
           {merchEvents.map((item) => (
             <SwiperSlide key={item.id}>
-              <div className="bg-white rounded-3xl shadow-sm overflow-hidden cursor-pointer hover:shadow-xl hover:-translate-y-2 transition-all duration-300 group h-full flex flex-col border border-blue-50/50">
+              <div 
+                // onClick={() => navigate(`/event-detail/${item.id}`)}
+                className="bg-white rounded-3xl shadow-sm overflow-hidden cursor-pointer hover:shadow-xl hover:-translate-y-2 transition-all duration-300 group h-full flex flex-col border border-blue-50/50"
+              >
                 <div className="aspect-[16/9] relative overflow-hidden flex-shrink-0">
                   <img src={item.img} alt={item.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
                   {item.label && (
@@ -182,7 +199,7 @@ const Home = () => {
         </Swiper>
       </section>
 
-      {/* SECTION 5: SẢN PHẨM BÁN LẺ (OPTION) */}
+      {/* SECTION 5: SẢN PHẨM BÁN LẺ */}
       <section className="pt-10 border-t border-dashed border-slate-200">
         <h2 className="text-2xl md:text-3xl font-black mb-10 text-slate-900 uppercase tracking-wide">Sản phẩm nổi bật</h2>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6">

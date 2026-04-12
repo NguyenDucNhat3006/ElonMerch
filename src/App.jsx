@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-route
 import { AnimatePresence, motion } from 'framer-motion';
 
 // Import Context
-import { AuthProvider } from './context/AuthContext'; // ⬅️ ĐÃ THÊM AUTHPROVIDER
+import { AuthProvider } from './context/AuthContext'; 
 import { CartProvider } from './context/CartContext';
 
 // Import Components
@@ -21,6 +21,7 @@ import AboutPage from './pages/AboutPage';
 import CartPage from './pages/CartPage';
 import SettingsPage from './pages/SettingsPage';
 import OrderDetailsPage from './pages/OrderDetailsPage';
+import EventDetailPage from './pages/EventDetailPage';
 
 // 1. Tạo component bọc hiệu ứng cho từng trang
 const PageTransition = ({ children }) => (
@@ -44,6 +45,7 @@ const AnimatedRoutes = () => {
       <Routes location={location} key={location.pathname}>
         <Route path="/" element={<PageTransition><Home /></PageTransition>} />
         <Route path="/cart" element={<PageTransition><CartPage /></PageTransition>} />
+        <Route path="/event-detail/:id" element={<PageTransition><EventDetailPage /></PageTransition>} />
         <Route path="/book-ticket/:id" element={<PageTransition><TicketBookingPage /></PageTransition>} />
         <Route path="/merch-detail/:id" element={<PageTransition><MerchDetailPage /></PageTransition>} />
         <Route path="/merch" element={<PageTransition><MerchPage /></PageTransition>} />
@@ -65,7 +67,6 @@ function App() {
     <AuthProvider>
       <CartProvider>
         <Router>
-          {/* ⬇️ THAY ĐỔI: Thêm "overflow-y-scroll" vào class dưới đây */}
           <div className="min-h-screen flex flex-col overflow-x-hidden overflow-y-scroll">
             <Header onOpenAuth={setAuthType} />
 
