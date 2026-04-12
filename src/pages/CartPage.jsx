@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Trash2, Plus, Minus, ArrowRight, ShoppingCart, Clock, CheckCircle2, MapPin, PlusCircle } from 'lucide-react';
+import { Trash2, Plus, Minus, ArrowRight, ShoppingCart, Clock, CheckCircle2, MapPin, Package } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
 
@@ -11,16 +11,20 @@ import ban2 from '../assets/banner/ban2.png';
 const CartPage = () => {
   const navigate = useNavigate();
   const { cartItems, updateQuantity, removeFromCart, clearCart } = useCart();
-
-  // ✅ ĐÃ SỬA: Lấy cả user và addOrder bên trong component
   const { user, addOrder } = useAuth();
 
   const [checkoutStep, setCheckoutStep] = useState(1);
   const [paymentMethod, setPaymentMethod] = useState('vietqr');
   const [timeLeft, setTimeLeft] = useState(900);
   const [orderId, setOrderId] = useState("");
+  
+  // ✅ Tự động lấy thông tin từ User Profile để demo cho nhanh
+  const [shippingName, setShippingName] = useState(user?.name || '');
+  const [shippingPhone, setShippingPhone] = useState(user?.phone || '0987654321');
+  const [shippingAddress, setShippingAddress] = useState(user?.address || 'Đại học Công nghệ Thông tin, Khu phố 6, Linh Trung, Thủ Đức, TP.HCM');
 
   const firstTicket = useMemo(() => cartItems.find(item => item.type === 'ticket'), [cartItems]);
+  const hasMerch = useMemo(() => cartItems.some(item => item.type === 'merch'), [cartItems]);
 
   const bgImage = useMemo(() => {
     if (!firstTicket) return '';
@@ -31,7 +35,6 @@ const CartPage = () => {
 
   const subtotal = useMemo(() => cartItems.reduce((total, item) => total + (item.price * item.quantity), 0), [cartItems]);
   const totalQuantity = useMemo(() => cartItems.reduce((sum, item) => sum + item.quantity, 0), [cartItems]);
-  const hasMerch = cartItems.some(item => item.type === 'merch');
   const total = subtotal + (hasMerch ? 30000 : 0);
 
   useEffect(() => {
@@ -56,6 +59,13 @@ const CartPage = () => {
   };
 
   const handleFinalPayment = () => {
+    // ✅ Kiểm tra tính hợp lệ: Bắt buộc điền đủ 3 trường nếu có Merch
+    if (hasMerch) {
+      if (!shippingName.trim() || !shippingPhone.trim() || !shippingAddress.trim()) {
+        alert("Vui lòng nhập đầy đủ Họ tên, Số điện thoại và Địa chỉ để tụi mình giao Merchandise nhé!");
+        return;
+      }
+    }
     const finalId = `ELONMERCH-${Math.floor(Math.random() * 10000)}`;
     setOrderId(finalId);
     setCheckoutStep(3);
@@ -138,10 +148,12 @@ const CartPage = () => {
           <div className="max-w-[1200px] mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
             <div className="space-y-2">
               <h1 className="text-2xl font-black leading-tight">{firstTicket?.name || 'Thanh toán đơn hàng'}</h1>
-              <div className="flex flex-wrap gap-6 text-sm text-slate-400 font-medium italic">
-                <span className="flex items-center gap-2 not-italic"><Clock size={16} className="text-white" /> 19:30 - 22:30, 30 Tháng 04, 2026</span>
-                <span className="flex items-center gap-2 not-italic"><MapPin size={16} className="text-white" /> Sân Khấu Nhà Thiếu Nhi TP.HCM</span>
-              </div>
+              {firstTicket && (
+                <div className="flex flex-wrap gap-6 text-sm text-slate-400 font-medium italic">
+                  <span className="flex items-center gap-2 not-italic"><Clock size={16} className="text-white" /> 19:30 - 22:30, 30 Tháng 04, 2026</span>
+                  <span className="flex items-center gap-2 not-italic"><MapPin size={16} className="text-white" /> Sân Khấu Nhà Thiếu Nhi TP.HCM</span>
+                </div>
+              )}
             </div>
             <div className="bg-white/5 border border-white/10 p-4 rounded-2xl flex items-center gap-4 shadow-inner">
               <span className="text-[10px] uppercase font-black text-slate-400 leading-tight w-20 text-right tracking-tighter">Hoàn tất đặt vé trong</span>
@@ -157,11 +169,60 @@ const CartPage = () => {
           <h2 className="text-[#22C55E] text-2xl font-black uppercase mb-8 tracking-[0.2em]">THANH TOÁN</h2>
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
             <div className="lg:col-span-8 space-y-6">
+              
+              {/* Box 1: Thông tin liên hệ */}
               <div className="bg-[#222]/80 backdrop-blur-sm rounded-xl p-6 border border-white/5">
-                <h3 className="text-[#22C55E] font-bold text-sm mb-4 uppercase tracking-widest">Thông tin nhận vé</h3>
-                <p className="text-slate-400 text-sm mb-2 font-medium">Vé điện tử sẽ được hiển thị trong mục <span className="text-white font-bold">"Vé của tôi"</span> của tài khoản</p>
-                <p className="font-bold text-slate-200 text-lg">{user?.email}</p>
+                <h3 className="text-[#22C55E] font-bold text-sm mb-4 uppercase tracking-widest">Thông tin liên hệ & Nhận vé</h3>
+                <p className="text-slate-400 text-sm mb-2 font-medium">Vé điện tử và hoá đơn sẽ được gửi vào hòm thư <span className="text-white font-bold">"Vé của tôi"</span></p>
+                <p className="font-bold text-slate-200 text-lg mb-1">{user?.name || 'Thành viên Elon'}</p>
+                <p className="font-bold text-slate-400 text-sm">{user?.email}</p>
               </div>
+
+              {/* ⬇️ Box 2: Thông tin giao hàng (CHỈ HIỆN KHI CÓ MERCH)  */}
+              {hasMerch && (
+                <div className="bg-[#222]/80 backdrop-blur-sm rounded-xl p-6 border border-white/5 border-l-4 border-l-[#4054B2] animate-slide-up shadow-[0_0_15px_rgba(64,84,178,0.2)]">
+                  <h3 className="text-[#4054B2] font-bold text-sm mb-6 uppercase tracking-widest flex items-center gap-2">
+                    <Package size={18} /> Thông tin nhận Merchandise
+                  </h3>
+                  <div className="space-y-5">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                      <div className="space-y-2">
+                        <label className="text-slate-400 text-xs font-bold uppercase tracking-wider">Họ và tên người nhận</label>
+                        <input 
+                          type="text"
+                          value={shippingName}
+                          onChange={(e) => setShippingName(e.target.value)}
+                          className="w-full bg-[#111] border border-white/10 rounded-xl p-3 text-white focus:outline-none focus:border-[#4054B2] transition-colors text-sm font-medium"
+                          placeholder="Ví dụ: Nguyễn Văn A"
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <label className="text-slate-400 text-xs font-bold uppercase tracking-wider">Số điện thoại</label>
+                        <input 
+                          type="tel"
+                          value={shippingPhone}
+                          onChange={(e) => setShippingPhone(e.target.value)}
+                          className="w-full bg-[#111] border border-white/10 rounded-xl p-3 text-white focus:outline-none focus:border-[#4054B2] transition-colors text-sm font-medium"
+                          placeholder="Ví dụ: 0987654321"
+                        />
+                      </div>
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <label className="text-slate-400 text-xs font-bold uppercase tracking-wider">Nơi nhận hàng</label>
+                      <textarea 
+                        value={shippingAddress}
+                        onChange={(e) => setShippingAddress(e.target.value)}
+                        className="w-full bg-[#111] border border-white/10 rounded-xl p-3 text-white focus:outline-none focus:border-[#4054B2] transition-colors resize-none text-sm font-medium"
+                        rows="2"
+                        placeholder="Ví dụ: 123 Đường ABC, Phường X, Quận Y, TP.HCM"
+                      ></textarea>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Box 3: Phương thức thanh toán */}
               <div className="bg-[#222]/80 backdrop-blur-sm rounded-xl p-6 border border-white/5">
                 <h3 className="text-[#22C55E] font-bold text-sm mb-6 uppercase tracking-widest">Phương thức thanh toán</h3>
                 <div className="space-y-4">
@@ -175,12 +236,13 @@ const CartPage = () => {
                   </label>
                 </div>
               </div>
+
             </div>
             <div className="lg:col-span-4 space-y-6">
               <div className="bg-white rounded-[28px] p-8 text-black shadow-2xl relative">
                 <div className="flex justify-between items-center mb-8 border-b border-slate-100 pb-4">
-                  <p className="font-black text-sm uppercase">Thông tin đặt vé</p>
-                  <button onClick={() => setCheckoutStep(1)} className="text-[#4054B2] text-xs font-black">Chọn lại vé</button>
+                  <p className="font-black text-sm uppercase">Thông tin đặt hàng</p>
+                  <button onClick={() => setCheckoutStep(1)} className="text-[#4054B2] text-xs font-black">Chỉnh sửa</button>
                 </div>
                 <div className="space-y-8 max-h-[300px] overflow-y-auto pr-2">
                   {cartItems.map(t => (
@@ -196,12 +258,12 @@ const CartPage = () => {
                 </div>
               </div>
               <div className="bg-white rounded-[28px] p-8 text-black shadow-2xl">
-                <h3 className="font-black text-xs uppercase text-slate-400 mb-6 tracking-widest">Thông tin đơn hàng</h3>
+                <h3 className="font-black text-xs uppercase text-slate-400 mb-6 tracking-widest">Chi phí</h3>
                 <div className="pt-6 border-t border-slate-100 flex justify-between items-center mb-8">
                   <span className="font-black text-slate-900">Tổng tiền</span>
                   <span className="text-3xl font-black text-[#22C55E]">{total.toLocaleString()}đ</span>
                 </div>
-                <button onClick={handleFinalPayment} className="w-full py-5 bg-[#22C55E] hover:bg-green-600 text-white rounded-2xl font-black text-xl shadow-lg">Thanh toán</button>
+                <button onClick={handleFinalPayment} className="w-full py-5 bg-[#22C55E] hover:bg-green-600 text-white rounded-2xl font-black text-xl shadow-lg active:scale-95 transition-all">Thanh toán</button>
               </div>
             </div>
           </div>
@@ -220,6 +282,12 @@ const CartPage = () => {
         date: new Date().toLocaleDateString('vi-VN'),
         status: "Chờ xác nhận",
         total: total,
+        // Lưu lại đầy đủ thông tin giao hàng vào lịch sử để sau này xài
+        shippingInfo: hasMerch ? {
+          name: shippingName,
+          phone: shippingPhone,
+          address: shippingAddress
+        } : null,
         items: cartItems.map(item => ({
           ...item,
           code: item.type === 'ticket' ? `TKT-${Math.random().toString(36).toUpperCase().substring(2, 10)}` : null,

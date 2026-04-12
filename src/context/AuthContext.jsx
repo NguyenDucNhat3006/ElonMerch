@@ -1,44 +1,65 @@
-import React, { createContext, useState, useContext } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 
 const AuthContext = createContext();
-export const useAuth = () => useContext(AuthContext);
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
+  //  LẤY PHIÊN ĐĂNG NHẬP HIỆN TẠI (SESSION)
+  const [user, setUser] = useState(() => {
+    const savedSession = localStorage.getItem('elon_session');
+    return savedSession ? JSON.parse(savedSession) : null;
+  });
 
-  const login = (email) => {
-    setUser({
-      name: 'Nguyễn Đức Nhật',
-      email: email,
-      phone: '0987654321',
-      address: 'Khu phố 6, Linh Trung, Thủ Đức, TP.HCM',
-      orders: [] // Luôn khởi tạo mảng rỗng
+  //  LƯU SESSION & ĐỒNG BỘ VÀO "DATABASE" MỖI KHI CÓ THAY ĐỔI
+  useEffect(() => {
+    if (user) {
+      // Lưu trạng thái đang đăng nhập
+      localStorage.setItem('elon_session', JSON.stringify(user));
+      
+      // LƯU VÀO DATABASE ĐỂ KHÔNG BỊ MẤT KHI ĐĂNG XUẤT
+      const db = JSON.parse(localStorage.getItem('elon_users_db')) || {};
+      db[user.email] = user; // Dùng email làm chìa khóa (key)
+      localStorage.setItem('elon_users_db', JSON.stringify(db));
+    } else {
+      // Khi Đăng xuất: Chỉ xóa phiên đăng nhập, KHÔNG xóa dữ liệu trong DB
+      localStorage.removeItem('elon_session');
+    }
+  }, [user]);
+
+  //  HÀM ĐĂNG NHẬP THÔNG MINH
+  const login = (userData) => {
+    const db = JSON.parse(localStorage.getItem('elon_users_db')) || {};
+    
+    // Nếu email này đã từng tồn tại trong DB -> Lấy lại Avatar, Tên, Đơn hàng cũ
+    if (db[userData.email]) {
+      setUser(db[userData.email]);
+    } else {
+      // Nếu email mới toanh -> Dùng dữ liệu mặc định
+      setUser(userData);
+    }
+  };
+
+  const logout = () => {
+    setUser(null);
+  };
+
+  const updateUser = (newInfo) => {
+    setUser((prevUser) => {
+      return { ...prevUser, ...newInfo }; 
     });
   };
 
-  const addOrder = (newOrder) => {
-    setUser(prev => {
-      if (!prev) return prev;
-      return {
-        ...prev,
-        orders: [newOrder, ...(prev.orders || [])]
-      };
+  const addOrder = (order) => {
+    setUser((prevUser) => {
+      const currentOrders = prevUser?.orders || [];
+      return { ...prevUser, orders: [order, ...currentOrders] };
     });
   };
-
-  const updateUser = (newData) => {
-    setUser(prev => (prev ? { ...prev, ...newData } : prev));
-  };
-
-  const register = (email) => {
-    setUser({ name: 'Thành viên mới', email, phone: '', address: '', orders: [] });
-  };
-
-  const logout = () => setUser(null);
 
   return (
-    <AuthContext.Provider value={{ user, login, register, logout, updateUser, addOrder }}>
+    <AuthContext.Provider value={{ user, login, logout, updateUser, addOrder }}>
       {children}
     </AuthContext.Provider>
   );
 };
+
+export const useAuth = () => useContext(AuthContext);

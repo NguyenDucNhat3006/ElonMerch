@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-// 1. Thêm ClipboardList vào danh sách import icon
 import { Search, ShoppingCart, User, Settings, LogOut, ClipboardList } from 'lucide-react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import myLogo from '../assets/banner/logoelon.png';
@@ -63,8 +62,12 @@ const Header = ({ onOpenAuth }) => {
                   onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                   className="flex items-center gap-3 text-slate-600 hover:text-primary transition-all p-1 pr-4 rounded-full hover:bg-slate-50 border border-transparent hover:border-slate-100 shadow-sm"
                 >
-                  <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center text-primary border border-primary/20">
-                    <User size={20} />
+                  <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center text-primary border border-primary/20 overflow-hidden shadow-sm">
+                    {user.avatar ? (
+                      <img src={user.avatar} alt="Avatar" className="w-full h-full object-cover" />
+                    ) : (
+                      <User size={20} />
+                    )}
                   </div>
                   <span className="font-bold text-sm hidden md:block max-w-[120px] truncate">{user.name}</span>
                 </button>
@@ -73,13 +76,13 @@ const Header = ({ onOpenAuth }) => {
                   <div className="absolute right-0 mt-4 w-64 bg-white rounded-[28px] shadow-[0_20px_50px_rgba(0,0,0,0.12)] border border-slate-100 overflow-hidden py-3 z-[100] animate-slide-up">
                     <div className="px-6 py-4 border-b border-slate-50 mb-2">
                       <p className="text-[10px] text-slate-400 font-black uppercase tracking-[0.15em] mb-1">Tài khoản của</p>
+                      {/* Cập nhật tên trong menu dropdown */}
                       <p className="text-base font-black text-slate-900 truncate">{user.name}</p>
                     </div>
 
-                    {/* 2. NÚT ĐƠN HÀNG CỦA TÔI (Nằm trên nút Cài đặt) */}
                     <button
                       onClick={() => {
-                        navigate('/order-details/ELON-9999'); // ID mẫu
+                        navigate('/order-details/ELON-9999'); 
                         setIsDropdownOpen(false);
                       }}
                       className="w-full text-left px-6 py-3.5 text-sm text-slate-600 hover:bg-[#F0F3FF] hover:text-primary flex items-center gap-3 transition-colors font-bold"

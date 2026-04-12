@@ -3,26 +3,39 @@ import { X } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
 const AuthModal = ({ type, onClose, switchType }) => {
-  const { login, register } = useAuth(); // Lấy hàm từ Context ra xài
+  const { login, register } = useAuth(); 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    
+    // TẠO DỮ LIỆU USER CHUẨN ĐỂ ĐỒNG BỘ VỚI HEADER VÀ SETTINGS
+    const mockUserData = {
+      email: email,
+      name: email.split('@')[0], // Lấy phần trước @ của email làm tên mặc định
+      phone: '0987654321',
+      address: 'Đại học Công nghệ Thông tin, Khu phố 6, Linh Trung, Thủ Đức, TP.HCM',
+      avatar: '',
+      orders: []
+    };
+
     if (type === 'login') {
-      login(email); // Gọi hàm đăng nhập giả lập
+      login(mockUserData); 
     } else {
-      register(email);
+      if (register) {
+        register(mockUserData);
+      } else {
+        login(mockUserData); // Dự phòng nếu chưa có hàm register
+      }
     }
-    onClose(); // Đăng nhập xong thì đóng Modal lại
+    onClose(); 
   };
 
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/40 backdrop-blur-sm p-4 animate-fade-in">
-      {/* Khung Modal bám sát UI ảnh chụp */}
       <div className="bg-white rounded-3xl w-full max-w-[480px] shadow-2xl relative overflow-hidden animate-slide-up">
         
-        {/* Header Modal */}
         <div className="flex items-center justify-between p-6 border-b border-slate-100">
           <div className="flex-1 flex justify-center items-center gap-2 text-primary font-black text-xl">
            {type === 'login' ? 'ĐĂNG NHẬP' : 'ĐĂNG KÝ'}
@@ -37,17 +50,17 @@ const AuthModal = ({ type, onClose, switchType }) => {
             <input 
               required type="text" placeholder="Nhập email hoặc số điện thoại..." 
               value={email} onChange={e => setEmail(e.target.value)}
-              className="w-full bg-slate-50 border border-slate-200 rounded-xl py-3.5 px-4 outline-none focus:border-primary focus:bg-white transition-all text-sm"
+              className="w-full bg-slate-50 border border-slate-200 rounded-xl py-3.5 px-4 outline-none focus:border-primary focus:bg-white transition-all text-sm font-medium text-slate-900"
             />
             <input 
               required type="password" placeholder="Nhập mật khẩu..." 
               value={password} onChange={e => setPassword(e.target.value)}
-              className="w-full bg-slate-50 border border-slate-200 rounded-xl py-3.5 px-4 outline-none focus:border-primary focus:bg-white transition-all text-sm"
+              className="w-full bg-slate-50 border border-slate-200 rounded-xl py-3.5 px-4 outline-none focus:border-primary focus:bg-white transition-all text-sm font-medium text-slate-900"
             />
             {type === 'register' && (
               <input 
                 required type="password" placeholder="Xác nhận mật khẩu..." 
-                className="w-full bg-slate-50 border border-slate-200 rounded-xl py-3.5 px-4 outline-none focus:border-primary focus:bg-white transition-all text-sm"
+                className="w-full bg-slate-50 border border-slate-200 rounded-xl py-3.5 px-4 outline-none focus:border-primary focus:bg-white transition-all text-sm font-medium text-slate-900"
               />
             )}
 
