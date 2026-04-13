@@ -32,7 +32,7 @@ html {
 @layer base {
   body {
     background-color: #E8EDFF;
-    background-image: radial-gradient(circle at top left, #ffffff 0%, #E8EDFF 50%, #C4D3FF 100%);
+    background-image: radial-gradient(circle at top left, #ffffff 0%, #a8b4de 50%, #778dcf 100%);
     background-attachment: fixed;
     font-family: 'Inter', sans-serif;
     color: #333333;
@@ -53,7 +53,7 @@ html {
   body {
     /* Màu nền gradient xanh dương nhạt / trắng giống Figma */
     background-color: #E8EDFF;
-    background-image: radial-gradient(circle at top left, #ffffff 0%, #E8EDFF 50%, #C4D3FF 100%);
+    background-image: radial-gradient(circle at top left, #ffffff 0%, #E8EDFF 50%, #bac8f5 100%);
     background-attachment: fixed;
     font-family: 'Inter', sans-serif;
     color: #333333;
