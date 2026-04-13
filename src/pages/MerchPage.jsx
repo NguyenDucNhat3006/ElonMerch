@@ -122,13 +122,10 @@ const MerchPage = () => {
                 </Swiper>
             </section>
 
-            {/* ⬇️ THÊM MỚI: Section SẢN PHẨM BÁN LẺ ⬇️ */}
             <section className="pt-10 border-t border-dashed border-slate-200">
                 <div className="flex items-center justify-between mb-10">
                     <div className="flex items-center gap-4">
-                        <div className="w-10 h-10 flex items-center justify-center">
-                            <span className="text-3xl">🛍️</span>
-                        </div>
+                        
                         <h2 className="text-2xl md:text-3xl font-black text-slate-900 uppercase tracking-wide">
                             Sản phẩm nổi bật
                         </h2>
