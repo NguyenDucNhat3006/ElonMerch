@@ -45,7 +45,7 @@ const Home = () => {
   // ✅ ĐÃ CẬP NHẬT TÊN VÀ NHÃN TỪ ẢNH THIẾT KẾ CỦA NHẬT
   const specialEvents = [
     { id: 6, title: 'Sân Khấu Quốc Thảo: Dưới Màn Son', img: event1, label: 'Giảm 50%' },
-    { id: 7, title: 'Hoàng Dũng - Xoay Tròn', img: event2, label: 'MERCHANDISE' },
+    { id: 7, title: 'Hoàng Dũng - Xoay Tròn', img: event2, label: 'HOT' },
     { id: 8, title: 'Super Sunday Studio', img: event3, label: 'TRỰC TIẾP' },
     { id: 1, title: 'Lệ Chi Viên', img: leChiVien, label: 'HOT' }, // Link về Lệ Chi Viên
     { id: 2, title: 'Soobin All-Rounder', img: concert, label: null }, // Link về Soobin
